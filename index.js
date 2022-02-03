@@ -10,6 +10,7 @@ const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const MongoStore = require('connect-mongo');
 const sassMiddleware = require('node-sass-middleware');
+const sass = require('node-sass');
 
 app.use(sassMiddleware({
 
@@ -52,9 +53,9 @@ app.use(session({
         maxAge: (1000*60*100)
     }
     ,
-    store: MongoStore.create({
+    store: new MongoStore({
 
-        mongoUrl: 'mongodb://127.0.0.1:27017',
+        mongoUrl: 'mongodb://localhost:27017',
         autoRemove: 'disabled'
     }, function(err){
 
