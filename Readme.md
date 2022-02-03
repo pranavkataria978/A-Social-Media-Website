@@ -27,3 +27,8 @@ Authentication Steps:
 2. Create Session
 3. Show Details on Profile Page
 4. Sign out
+
+Authentication using passport.js
+
+SASS-> indented syntax
+SCSS -> brackets used
