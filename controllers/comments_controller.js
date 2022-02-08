@@ -2,65 +2,71 @@ const { redirect } = require("express/lib/response");
 const Comment = require("../models/comment");
 const Post = require("../models/post");
 
-module.exports.create = function(req,res){
+module.exports.create = async function(req,res){
 
-    
+    try {
 
-    Post.findById(req.body.post,function(err,post){
 
-        console.log(post);
+        let post = await Post.findById(req.body.post);
+
 
         if(post){
 
-            Comment.create({
+            let comment = await Comment.create({
 
                 content: req.body.content,
                 post: req.body.post,
                 user: req.user._id
 
-            },function(err,comment){
-
-
-                if(err){
-
-                    console.log("Error while creating post");
-                    return;
-                }
-
-
-                post.comments.push(comment);
-
-                post.save(); // to save changes made
-
-
-                return res.redirect('/');
             });
-        }
-    });
 
+            post.comments.push(comment);
+
+            post.save(); // to save changes made
+
+            return res.redirect('/');
+        }
+    
+
+        
+    }catch(err){
+        
+        console.log("Error",err);
+        returnl
+    }
+
+    
 
 };
 
 
-module.exports.destroy = function(req,res){
+module.exports.destroy = async function(req,res){
 
 
-        Comment.findById(req.params.id,function(err,comment){
+    try {
 
-                if(comment.user == req.user.id){
 
-                    let postId = comment.post;
+        let comment = await Comment.findById(req.params.id);
 
-                    comment.remove();
+        if(comment.user == req.user.id){
 
-                    Post.findByIdAndUpdate(postId,{$pull : { comments: req.params.id}},function(err,post){
+            let postId = comment.post;
 
-                        return res.redirect('back');
-                    });
-                }else{
+            comment.remove();
 
-                    return res.redirect('back');
-                }
+            let post =  Post.findByIdAndUpdate(postId,{$pull : { comments: req.params.id}},function(err,post){
 
-        });
+                return res.redirect('back');
+            });
+        }else{
+
+            return res.redirect('back');
+        }
+        
+    } catch (err) {
+        console.log("error",err);
+        return;
+    }
+
+        
 }

@@ -2,53 +2,37 @@ const Post = require('../models/post');
 const User = require('../models/user');
 
 
-module.exports.home = function(req,res){
-
-    //res.cookie('user_id',25);
-
-    // Post.find({},function(err,posts){
-
-       
-
-    //     return res.render('home',{
-
-    //         title: "Home",
-    //         posts: posts
-    //     });
-    // });
-
-    Post.find({})
-    .populate('user')
-    .populate({
-        path: 'comments',
-        populate:{
-
-            path:"user"
-        }
-    })
-    // .exec(function(err,posts){
+module.exports.home = async function(req,res){
 
 
-    //     return res.render('home',{
+    try{
 
-    //                 title: "Home",
-    //                 posts: posts
-    //             });
+        let posts = await Post.find({})
+                .populate('user')
+                .populate({
+                path: 'comments',
+                populate:{
 
-    // })
-    .exec(function(err,posts){
-
-        User.find({},function(err,user){
-
-            return res.render('home',{
-
-                title: "Home",
-                posts:posts,
-                all_users: user
-            });
-
+                    path:"user"
+            }
         });
-    });
 
+
+        let users =  await User.find({});
+
+        return res.render('home',{
+
+            title: "Home",
+            posts:posts,
+            all_users: users
+        });
+
+    }catch(err){
+
+        console.log("Error:",err);
+        return;
+    }
+    
+  
 };
 
