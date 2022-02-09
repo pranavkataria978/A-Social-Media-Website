@@ -13,6 +13,7 @@ const sassMiddleware = require('node-sass-middleware');
 const sass = require('node-sass');
 const flash = require('connect-flash');
 const customMiddleware = require('./config/middleware');
+const Noty = require('noty');
 
 app.use(sassMiddleware({
 
@@ -65,13 +66,19 @@ app.use(session({
     })
 }));
 
+
+
+
+
+
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.use(passport.setAuthenticatedUser);
+
 
 app.use(flash());
 app.use(customMiddleware.setFlash);
+
 
 
 app.use('/',require('./routes'));
