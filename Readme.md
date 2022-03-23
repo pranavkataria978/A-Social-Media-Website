@@ -32,3 +32,14 @@ Authentication using passport.js
 
 SASS-> indented syntax
 SCSS -> brackets used
+
+
+File Upload:
+Database not stores the files
+/uploads/users/file_use
+database has the reference of the file
+
+In large scale cases the files are stored in a bucket
+somewhere else in the remote storage.
+
+Along with the path more details can also be stored.
